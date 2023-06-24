@@ -10,22 +10,21 @@ const mailerMeetingDetail = (doctor,patient,meeting,task) => {
     },
   });
 
-  if(task==='create'){
+  if(task==='createappointment'){
     // Send Mail to Doctor
   transporter.sendMail({
     to: doctor.email,
     from:  process.env.mailID,
-    subject: "Hey, Your meeting is Confirmed with patient.",
-    text: "From vedmedApp",
+    subject: "Hi Doctor, Patient send message to you to book appointment.",
+    text: "From vedmedApp.",
     html: 
     `
       <h1>Hello ${doctor.name}</h1>
-      <p>A patient  has booked a meeting with you.</p>
-      <h2>Here are your Meeting details:-<h2> 
+      <h2>Here are your appointment details:-<h2> 
       <p><b>Patient Name: </b>${patient.name}</p>
       <p><b>Meeting Date: </b>${meeting.meetingDate}</p>
       <p><b>Meeting Time: </b>${meeting.meetingTime}</p>      
-      <p><b>Meeting ID: </b>${meeting._id}</p>      
+      <p>*For update status of appoingment please update thour app.</p>      
       <p>Please Do not share this information with anyone.</p>      
     `,
   })
@@ -37,39 +36,13 @@ const mailerMeetingDetail = (doctor,patient,meeting,task) => {
     console.log(err);
   });
 
-// Send Mail to patient
-transporter
-  .sendMail({
-    to: patient.email,
-    from: process.env.mailID,
-    subject: "ThankYou, Your meeting is Confirmed with Doctor.",
-    text: "From vedmedApp",
-    html: 
-    `
-      <h1>Hello ${patient.name}</h1>
-      <p>Thank you for booking a meeting on vedmedApp.</p>
-      <h2>Here are your meeting details:-<h2> 
-      <p><b>Doctor Name: </b>${doctor.name}</p>
-      <p><b>Meeting Date: </b>${meeting.meetingDate}</p>
-      <p><b>Meeting Time: </b>${meeting.meetingTime}</p>
-      <p><b>Meeting ID: </b>${meeting._id}</p>   
-      <p>*Please Do not share this information with anyone.</p>     
-    `,
-  })
-  .then((info) => {
-    console.log(info.response);
-    console.log("Mail sent to patient.");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
   }else if(task==='update'){
     // Send Mail to Doctor
   transporter
   .sendMail({
     to: doctor.email,
     from:  process.env.mailID,
-    subject: "Hey, Meeting information updated by patient.",
+    subject: "Hi Doctor, Meeting information updated by patient.",
     text: "From vedmedApp ",
     html: `
       <h1>Hello ${doctor.name}</h1>
@@ -121,7 +94,7 @@ transporter
   .sendMail({
     to: doctor.email,
     from:  process.env.mailID,
-    subject: "Hey, Meeting cancelled by patient.",
+    subject: "Hi Doctor, Meeting cancelled by patient.",
     text: "From vedmedApp ",
     html: `
       <h1>Hello ${doctor.name},</h1>
@@ -165,12 +138,12 @@ transporter
   .catch((err) => {
     console.log(err);
   });
-  }else if(task.whom=='sendtopatient'){
+  }else if(task.whom==='sendtopatient'){
     transporter
   .sendMail({
     to: patient.email,
     from: process.env.mailID,
-    subject: "Hey, Please join meet.",
+    subject: "Hi Patient, Please join meet.",
     text: "From vedmedApp",
     html: `
       <h1>Hello ${patient.name},</h1>
@@ -191,12 +164,12 @@ transporter
   .catch((err) => {
     console.log(err);
   });
-  }else if(task.whom=='sendtodoctor'){
+  }else if(task.whom==='sendtodoctor'){
     transporter
   .sendMail({
     to: doctor.email,
     from: process.env.mailID,
-    subject: "Hey, Please join meet.",
+    subject: "Hi Doctor, Please join meet.",
     text: "From vedmedApp",
     html: `
       <h1>Hello ${doctor.name},</h1>
@@ -217,6 +190,139 @@ transporter
   .catch((err) => {
     console.log(err);
   });
+  }else if(task==='createmeeting'){
+     // Send Mail to Doctor
+  transporter
+  .sendMail({
+    to: doctor.email,
+    from:  process.env.mailID,
+    subject: "Hi Doctor, meeting scheduled by you.",
+    text: "From vedmedApp.",
+    html: `
+      <h1>Hello ${doctor.name},</h1>
+      <p>You accept the appointment of patient and scheduled meeting just now.</p>
+      <p>Here are your meeting details:</p>
+      <p><b>Patient Name: </b>${patient.name}</p>
+      <p><b>Patient Concerns: </b>${meeting.concerns}</p>
+      <p><b>Meeting Date: </b>${meeting.meetingDate}</p>      
+      <p><b>Meeting Time: </b>${meeting.meetingTime}</p>      
+      <p><b>Meeting ID: </b>${meeting._id}</p>   
+      <p>ThankYou for your service.</p>   
+      <p>Please Do not share this information with anyone.</p>      
+    `,
+  })
+  .then((info) => {
+    console.log(info.response);
+    console.log("Mail sent to Doctor.");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// Send Mail to patient
+transporter
+  .sendMail({
+    to: patient.email,
+    from: process.env.mailID,
+    subject: "Accepted, Your meeting schecduled with doctor.",
+    text: "From vedmedApp",
+    html: `
+      <h1>Hello ${patient.name},</h1>
+      <p>Meeting is scheduled by doctor.</p>
+      <p><b>Doctor name: </b>${doctor.name}</p>
+      <p><b>Meeting Date: </b>${meeting.meetingDate}</p>
+      <p><b>Meeting Time: </b>${meeting.meetingTime}</p>
+      <p><b>Meeting ID: </b>${meeting._id}</p> 
+      <p>ThankYou for your service.</p>  
+      <p>*Please Do not share this information with anyone.</p>     
+    `,
+  })
+  .then((info) => {
+    console.log(info.response);
+    console.log("Mail sent to patient.");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  }else if(task==='cancelappointment'){
+    transporter
+  .sendMail({
+    to: patient.email,
+    from: process.env.mailID,
+    subject: "Rejectoed, Your appointment rejected by doctor.",
+    text: "From vedmedApp",
+    html: `
+      <h1>Hello ${patient.name},</h1>
+      <p>Appointment is rejected by doctor.</p>
+      <p><b>Doctor name: </b>${doctor.name}</p>
+      <p><b>Meeting Date: </b>${meeting.meetingDate}</p>
+      <p><b>Meeting Time: </b>${meeting.meetingTime}</p>
+      <p>Please select different time and date to book appointment.</p>  
+      <p>*Please Do not share this information with anyone.</p>     
+    `,
+  })
+  .then((info) => {
+    console.log(info.response);
+    console.log("Mail sent to patient.");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  }else if(task==='notefToDoctor'){
+// Send Mail to Doctor
+transporter
+.sendMail({
+  to: doctor.email,
+  from:  process.env.mailID,
+  subject: "Hi Doctor, Please Join Meet Immediately.",
+  text: "From vedmedApp.",
+  html: `
+    <h1>Hello ${doctor.name},</h1>
+    <p>Please Join Meet withing 5 minutes.</p>
+    <p>If you are not able to join meet then it will be cancelled.</p>
+    <p>Here are your meeting details:</p>
+    <p><b>Patient Name: </b>${patient.name}</p>
+    <p><b>Patient Concerns: </b>${meeting.concerns}</p>
+    <p><b>Meeting Date: </b>${meeting.meetingDate}</p>      
+    <p><b>Meeting Time: </b>${meeting.meetingTime}</p>      
+    <p><b>Meeting ID: </b>${meeting._id}</p>   
+    <p>Please Do not share this information with anyone.</p>      
+  `,
+})
+.then((info) => {
+  console.log(info.response);
+  console.log("Mail sent to Doctor.");
+})
+.catch((err) => {
+  console.log(err);
+});
+  }else if(task==='notefToPatient'){
+    transporter
+    .sendMail({
+      to: patient.email,
+      from: process.env.mailID,
+      subject: "Hi Patient, Please Join Meet Immediately.",
+      text: "From vedmedApp",
+      html: `
+      <h1>Hello ${doctor.name},</h1>
+      <p>Please Join Meet withing 5 minutes.</p>
+      <p>If you are not able to join meet then it will be cancelled.</p>
+      <p>Here are your meeting details:</p>
+      <p><b>Doctor Name: </b>${doctor.name}</p>
+      <p><b>Patient Concerns: </b>${meeting.concerns}</p>
+      <p><b>Meeting Date: </b>${meeting.meetingDate}</p>      
+      <p><b>Meeting Time: </b>${meeting.meetingTime}</p>      
+      <p><b>Meeting ID: </b>${meeting._id}</p>   
+      <p>Please Do not share this information with anyone.</p>       
+      `,
+    })
+    .then((info) => {
+      console.log(info.response);
+      console.log("Mail sent to patient.");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 };
 
