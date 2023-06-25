@@ -243,7 +243,8 @@ meetingRouter.get("/checktime/:meetingID",authorization(['admin','patient','doct
         }else if(getTodayDate=="greater"){
             res.status(200).send({"Message":"Your appointment date not come yet.Please wait.","flag":false})
         }else{
-            if (currentTime >= earlierTime && currentTime <= laterTime) {
+            console.log(earlierTime,laterTime,currentTime)
+             if (currentTime >= earlierTime && currentTime <= laterTime) {
                 res.status(200).send({"Message":"You can join meet","flag":true})
              }else if(currentTime > laterTime){
                 res.status(200).send({"Message":"Your appointment time passed away.Please create another appointment.","flag":false})
