@@ -307,10 +307,10 @@ function getDate(date1, date2){
 
 function getCurrentTime() {
     const now = new Date();
-  const options = { hour: '2-digit', minute: '2-digit', hour12: false };
-  const localTime = now.toLocaleString([], options).slice(-5);
-  console.log(localTime);
-  return localTime;
+    const options = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata' };
+    const indianTime = now.toLocaleString('en-IN', options).slice(-5);
+    console.log(indianTime);
+    return indianTime;
   }
 
 module.exports={
