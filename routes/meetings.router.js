@@ -307,9 +307,10 @@ function getDate(date1, date2){
 
 function getCurrentTime() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return hours + ':' + minutes;
+  const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+  const localTime = now.toLocaleString([], options).slice(-5);
+  console.log(localTime);
+  return localTime;
   }
 
 module.exports={
