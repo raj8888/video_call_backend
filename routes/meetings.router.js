@@ -259,20 +259,6 @@ meetingRouter.get("/checktime/:meetingID",authorization(['admin','patient','doct
     }
 })
 
-// meetingRouter.get("/single/doctor",authorization(['admin','doctor']),async(req,res)=>{
-//     try {
-//         let doctorID=req.body.userID
-//         console.log(req.body)
-//         let doctorData=await doctorModel.findById(doctorID)
-//         res.status(200).send({"Message":"Here is your docor data","doctorData":doctorData})
-//     } catch (error) {
-//         console.log(req.body)
-//         console.log(error.message)
-//         res.status(400).send({"message":"Sorry :( , Server Error"})
-//     }
-// })
-
-// Calculate the time 5 minutes later than the current time
 function getLaterTime(currentTime) {
   const [hours, minutes] = currentTime.split(':');
   const laterMinutes = parseInt(minutes) + 5;
